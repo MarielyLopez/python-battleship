@@ -12,6 +12,7 @@ def createTable():
     for column in range(0, 10):
         table_game.append(["-"] * 10)
 createTable()
+
 def clear():
     """Cleans the data on screen."""
     if os.name == "posix":
@@ -43,7 +44,7 @@ def play_again():
             print "Only can write -y- or -n- \n"
 
 
-def answer_user(guess_row,guess_column):
+def answer_user(guess_row,guess_column,battle_row,battle_column):
     guess_column = int(guess_column)
     guess_row = int(guess_row)
     if guess_row == battle_row and guess_column == battle_column:
@@ -81,30 +82,30 @@ def board_game(table_game):
 #*****************Board game player 1***********************
 
 def generate_board_game_player_one():
-    for column in range(0, 10):
-        table_game.append(["-"] * 10)
+    for columnp1 in range(0, 10):
+        table_gamep1.append(["-"] * 10)
 
 def board_game_player_one(table_gamep1):
     print "Gamer one!"
     print " 0 1 2 3 4 5 6 7 8 9"
     number = 0
-    for row in table_game:
-        print "|" + "|".join(row) + "|" + str(number)#function join () will remove the "" lists.
+    for rowp1 in table_gamep1:
+        print "|" + "|".join(rowp1) + "|" + str(number)#function join () will remove the "" lists.
         number+=1
 
 
 #*****************Board game***********************
 
 def generate_board_game_player_two():
-    for column in range(0, 10):
-        table_game.append(["-"] * 10)
+    for columnp2 in range(0, 10):
+        table_gamep2.append(["-"] * 10)
 
 def board_game_player_two(table_gamep2):
     print "Gamer two!"
     print " 0 1 2 3 4 5 6 7 8 9"
     number = 0
-    for row in table_game:
-        print "|" + "|".join(row) + "|" + str(number)#function join () will remove the "" lists.
+    for rowp2 in table_gamep2:
+        print "|" + "|".join(rowp2) + "|" + str(number)#function join () will remove the "" lists.
         number+=1
 
 
@@ -117,13 +118,19 @@ def random_row(table_game):
 def random_column(table_game):
     return random.randint(0, len(table_game[0])-1)
 
-battle_row = random_row(table_game)
-battle_column = random_column(table_game)
-
+def random_play():
+    battle_row = random_row(table_game)
+    battle_column = random_column(table_game)
+    return battle_row,battle_column
 
 def ask_user():
+    battle_row,battle_column = random_play()
+    print battle_row
+    print battle_column
+
     def turnos():
         #clear_list()
+        #clear()
         board_game(table_game)
         print ""
         print "Your turn is ", turno
@@ -133,7 +140,7 @@ def ask_user():
         if False == guess_row.isdigit():
             print "insert numbers"
         else:
-            answer_user(guess_row,guess_column)
+            answer_user(guess_row,guess_column,battle_row,battle_column)
     answeruserask = True
     while answeruserask == True:
         turno = 0
@@ -148,6 +155,156 @@ def ask_user():
             else:
                 turnos()
 
+def player_Multi():
+    #print_menu()
+    turn = True
+    while turn == True:
+        clear_list()
+        board_gamep1 = generate_board_game_player_one()
+        board_gamep2 = generate_board_game_player_two()
+        #print board_game_player_one(table_gamep1)
+        #answer_player1(coordenada1_jugador1,coordenada2_jugador1)
+        battle_1 = posicion_jugador1()
+        battle_2 = posicion_jugador2()
+        turn = turnos(battle_1,battle_2)
+    print_menu()
+
+def turnos(battle_1,battle_2):
+    puntosp1 = 0
+    puntosp2 = 0
+    for x in range(1,5):
+        print "su turno es",x       
+        a1 = attack_player_one(battle_2)#aqui uso los barcos como parametros para luego poder utilizarlos en la funcion de abajo.
+        if a1 == None:
+            #print "derivaste todos los barcos"
+            pass
+        else:
+            puntosp1 = puntosp1 + a1
+            if puntosp1 == 2:
+                print "Derivaste todos los barcos"
+                break
+
+        print "su turno es",x  
+        a2 = attacK_player_two(battle_1)
+        if a2 == None:
+            #print "derivaste todos los barcos"
+            pass
+        else:
+            puntosp2 = puntosp2 + a2
+            if puntosp2 == 2:
+                print "Derivaste todos los barcos"
+                break
+
+    m = raw_input("quiere jugar de nuevo ?")
+    if m == "si":
+        return True
+    else:
+        return False
+
+
+def posicion_jugador1():
+    barcos = []
+    for cord in range(1,3):
+
+        print"PLAYER ONE"
+        print "Ingrese la Coordenada donde quiere ocultar su barco."
+        coordenada1_jugador1 = input("--> Inserta fila: ")
+        coordenada2_jugador1 = input("--> Inserta columna: ")
+    #    coordenada_jugador = coordenadas_barco()
+        table_gamep1[coordenada1_jugador1][coordenada2_jugador1] = "H"
+        board_game_player_one(table_gamep1)
+        barcos.append({"fila":coordenada1_jugador1,"col":coordenada2_jugador1})#aqui se aguarda las corrdenadas ingresadas por el usuario
+  
+    return barcos
+
+
+
+def posicion_jugador2():
+    barcosp2 = []
+    for cordp2 in range(1,3):
+
+        print "PLAYER TWO"
+        print "Ingrese la Coordenada donde quiere ocultar su barco."
+        coordenada1_jugador2 = input("--> Inserta fila: ")
+        coordenada2_jugador2 = input("--> Inserta columna: ")
+    #    coordenada_jugador = coordenadas_barco()
+        table_gamep2[coordenada1_jugador2][coordenada2_jugador2] = "B"
+        board_game_player_two(table_gamep2)
+        barcosp2.append({"fila":coordenada1_jugador2,"col":coordenada2_jugador2})
+
+    return barcosp2
+
+
+def attack_player_one(battle_1):
+    attack1_p1 = raw_input("Player 1 ingresa la fila que quieres atacar!: ")
+    attack2_p1 = raw_input("Player 1 ingresa la columna que quieres atacar!: ")
+    a1 = answer_player1(attack1_p1,attack2_p1,battle_1)
+    return a1
+
+def answer_player1(guess_row,guess_column,battle_1):
+    guess_column = int(guess_column)
+    guess_row = int(guess_row)
+    print battle_1
+#El for verificara si acerto, si no acerto,se pasa al if.
+    for co in battle_1:#se imprime cada barco en battle_1
+        print co
+        print co["fila"]
+        print co["col"]
+        if guess_row == co["fila"] and guess_column == co["col"]:
+            print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
+            table_gamep2[guess_row][guess_column] = "x"
+            #board_game_player_one(table_gamep1)
+            board_game_player_two(table_gamep2)
+            return 1 
+    if (guess_row < 0 or guess_row >= 11) or (guess_column < 0 or guess_column >= 11):
+        print "That is not in the ocean!!"
+#            print " "
+        #board_game_player_one(table_gamep1)
+        board_game_player_two(table_gamep2)
+
+    elif table_gamep2[guess_row][guess_column] == "x":
+        print "You said that!"
+        #board_game_player_one(table_gamep1)
+        board_game_player_two(table_gamep2)
+    else:
+        print "You didn't sunk my battleship!!!. juju"
+        print " "
+        table_gamep2[guess_row][guess_column] = "x"
+        board_game_player_two(table_gamep2)
+
+
+def attacK_player_two(battle_2):
+    attack1_p2 = raw_input("Player 2 Ingresa la fila que quieres atacar!: ")
+    attack2_p2 = raw_input("Player 2 Ingresa la columna que quieres atacar!: ")
+    a2 = answer_player2(attack1_p2,attack2_p2,battle_2)
+def answer_player2(guess_rowp2,guess_columnp2,battle_2):
+    guess_columnp2 = int(guess_columnp2)
+    guess_rowp2 = int(guess_rowp2)
+    print battle_2
+    for co2 in battle_2:
+        print co2["fila"]
+        print co2["col"]
+        if guess_rowp2 == co2["fila"] and guess_columnp2 == co2["col"]:
+            print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
+            table_gamep1[guess_rowp2][guess_columnp2] = "x"
+            board_game_player_one(table_gamep1)
+            return 1
+    if (guess_rowp2 < 0 or guess_rowp2 >= 11) or (guess_columnp2 < 0 or guess_columnp2 >= 11):
+        print "That is not in the ocean!!"
+#            print " "
+        board_game_player_one(table_gamep1)
+        #board_game_player_two(table_gamep2)
+
+    elif table_gamep1[guess_rowp2][guess_columnp2] == "x":
+        print "You said that!"
+        board_game_player_one(table_gamep1)
+        #board_game_player_two(table_gamep2)
+    else:
+        print "You didn't sunk my battleship!!!. juju"
+        print " "
+        table_gamep1[guess_rowp2][guess_columnp2] = "x"
+        board_game_player_one(table_gamep1)
+
 
 
 
@@ -160,9 +317,7 @@ def instructions_game():
 
 def player_vs_bot():
     #clear_list()
-    print "gamer zero"
-    print battle_row
-    print battle_column
+    print "Single player"
     ask_user()
 
 def print_menu():
@@ -185,12 +340,12 @@ def menu():
         answer_usermenu = raw_input("Insert your option >>:  ")
         print " "
         if answer_usermenu == "1" or answer_usermenu == "One player":
-            #clear_list()
             print "ONE PLAYER..!! XD"
             player_vs_bot()
         elif answer_usermenu == "2" or answer_usermenu == "Multiplayer":
+            player_Multi()
             print "Sharks surrounded us! Insert other option or Please try later"
-            break
+            answerusermenu = True
         elif answer_usermenu == "3" or answer_usermenu == "Instructions":
             instructions_game()
         elif answer_usermenu == "4" or answer_usermenu == "Exit":
@@ -199,100 +354,4 @@ def menu():
         else:
             print "Insert the number or name to option"
 
-#print_menu()
-
-#******------Multiplayer------******
-
-    #Player_one
-def player_Multi():
-    #print_menu()
-    board_gamep1 = board_game(table_game)
-    posicion_jugador1()
-    answer_player1(coordenada1_jugador1,coordenada2_jugador1)
-
-
-
-def posicion_jugador1():
-    print "Ingrese la Coordenada donde quiere ocultar su barco."
-    coordenada1_jugador1 = raw_input("--> Inserta fila: ")
-    coordenada2_jugador1 = raw_input("--> Inserta columna: ")
-#    coordenada_jugador = coordenadas_barco()
-    int_numbers(coordenada1_jugador1, coordenada2_jugador1)
-    table_game[coordenada1_jugador1][coordenada2_jugador1] = "x"
-    board_gamep1(table_gamep1)
-    battle_rowp1 = coordenada1_jugador1
-    battle_columnp1 = coordenada2_jugador1
-    print battle_rowp1
-    print battle_columnp1
-
-def int_numbers(coordenada1_jugador1,coordenada2_jugador1):
-    coordenada2_jugador1 = int(coordenada2_jugador1)
-    coordenada1_jugador1 = int(coordenada1_jugador1)
-
-def answer_player1(coordenada1_jugador1,coordenada2_jugador1):
-    coordenada2_jugador1 = int(coordenada2_jugador1)
-    coordenada1_jugador1 = int(coordenada1_jugador1)
-
-    if coordenada1_jugador1 == battle_rowp2 and coordenada2_jugador1 == battle_columnp2:
-        print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
-#        play_again()
-        table_game[coordenada2_jugador1][coordenada1_jugador1] = "x"
-        board_game1(table_game)
-    else:
-        if (coordenada1_jugador1 < 0 or coordenada1_jugador1 >= 11) or (coordenada2_jugador1 < 0 or coordenada2_jugador1 >= 11):
-            print "That is not in the ocean!!"
-            print "aqui llegamos"
-#            print " "
-            board_game(table_game)
-        elif table_game[coordenada1_jugador1][coordenada2_jugador1] == "x":
-            print "You said that!"
-            board_game(table_game)
-        else:
-            print "You didn't sunk my battleship, You didn't sunk my battleship!!!. juju"
-            print " "
-            table_game[coordenada1_jugador1][coordenada2_jugador1] = "x"
-
-
-
-
-
-
-#    Player_two
-def posicion_jugador2():
-    board_gamep2 = board_game(table_game)
-    print "Ingrese la Coordenada donde quiere ocultar su barco."
-    coordenada1_jugador2 = raw_input("--> Inserta fila: ")
-    coordenada2_jugador2 = raw_input("--> Inserta columna: ")
-#    coordenada_jugador = coordenadas_barco()
-
-    table_game[coordenada1_jugador2][coordenada2_jugador2] = "C"
-    board_game(table_game)
-
-def answer_player1(coordenada1_jugador1,coordenada2_jugador1):
-    coordenada2_jugador1 = int(coordenada2_jugador1)
-    coordenada1_jugador1 = int(coordenada1_jugador1)
-
-    if coordenada1_jugador1 == battle_rowp1 and coordenada2_jugador1 == battle_columnp1:
-        print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
-#        play_again()
-        table_game[coordenada2_jugador1][coordenada1_jugador1] = "x"
-        board_game(table_game)
-    else:
-        if (coordenada1_jugador1 < 0 or coordenada1_jugador1 >= 11) or (coordenada2_jugador1 < 0 or guess_column >= 11):
-            print "That is not in the ocean!!"
-#            print " "
-            board_game(table_game)
-        elif table_game[coordenada1_jugador1][coordenada2_jugador1] == "x":
-            print "You said that!"
-            board_game(table_game)
-        else:
-            print "You didn't sunk my battleship, You didn't sunk my battleship!!!. juju"
-            print " "
-            table_game[coordenada1_jugador1][coordenada2_jugador1] = "x"
-
 print_menu()
-#print_menu()
-#board_game(table_game)
-#player_vs_bot()
-#board_game_player_one(table_gamep1)
-#board_game_player_two(table_gamep2)
