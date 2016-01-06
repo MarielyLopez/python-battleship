@@ -4,10 +4,13 @@ import random
 import sys
 import os
 import time
-
+#single player
 table_game = []
+#multi player
 table_gamep1 = []
+attack_table_gamep1 = []
 table_gamep2 = []
+attack_table_gamep2 = []
 def createTable():
     for column in range(0, 10):
         table_game.append(["-"] * 10)
@@ -23,7 +26,9 @@ def clear():
 def clear_list():
     del table_game[0:]
     del table_gamep1[0:]
-    del table_gamep2[0:] 
+    del table_gamep2[0:]
+    del attack_table_gamep1[0:]
+    del attack_table_gamep2[0:]
     createTable()
     #board_game(table_game[0])
 
@@ -36,10 +41,10 @@ def play_again():
         choose_user = raw_input("Do you want to play again y/n: ")
         choose_user = choose_user.lower()
         if choose_user == "y":
-            print_menu()
+            user_menu()
         elif choose_user == "n":
             print "Good bye"
-            print_menu()
+            sys.exit()
         else:
             print "Only can write -y- or -n- \n"
 
@@ -84,9 +89,10 @@ def board_game(table_game):
 def generate_board_game_player_one():
     for columnp1 in range(0, 10):
         table_gamep1.append(["-"] * 10)
+        attack_table_gamep1.append(["-"] * 10)
 
 def board_game_player_one(table_gamep1):
-    print "Gamer one!"
+    print "Board Game of Gamer one!"
     print " 0 1 2 3 4 5 6 7 8 9"
     number = 0
     for rowp1 in table_gamep1:
@@ -99,9 +105,10 @@ def board_game_player_one(table_gamep1):
 def generate_board_game_player_two():
     for columnp2 in range(0, 10):
         table_gamep2.append(["-"] * 10)
+        attack_table_gamep2.append(["-"] * 10)
 
 def board_game_player_two(table_gamep2):
-    print "Gamer two!"
+    print "Board Game of Gamer two!"
     print " 0 1 2 3 4 5 6 7 8 9"
     number = 0
     for rowp2 in table_gamep2:
@@ -156,7 +163,7 @@ def ask_user():
                 turnos()
 
 def player_Multi():
-    #print_menu()
+    #user_menu()
     turn = True
     while turn == True:
         clear_list()
@@ -167,7 +174,8 @@ def player_Multi():
         battle_1 = posicion_jugador1()
         battle_2 = posicion_jugador2()
         turn = turnos(battle_1,battle_2)
-    print_menu()
+    clear()
+    user_menu()
 
 def turnos(battle_1,battle_2):
     puntosp1 = 0
@@ -195,14 +203,15 @@ def turnos(battle_1,battle_2):
                 print "Derivaste todos los barcos"
                 break
 
-    m = raw_input("quiere jugar de nuevo ?")
-    if m == "si":
+    m = raw_input("quieres jugar de nuevo y/n?: ")
+    if m == "y":
         return True
     else:
         return False
 
 
 def posicion_jugador1():
+    clear()
     barcos = []
     for cord in range(1,3):
 
@@ -214,12 +223,13 @@ def posicion_jugador1():
         table_gamep1[coordenada1_jugador1][coordenada2_jugador1] = "H"
         board_game_player_one(table_gamep1)
         barcos.append({"fila":coordenada1_jugador1,"col":coordenada2_jugador1})#aqui se aguarda las corrdenadas ingresadas por el usuario
-  
     return barcos
 
 
 
 def posicion_jugador2():
+    raw_input("Enter para continuar...")
+    clear()
     barcosp2 = []
     for cordp2 in range(1,3):
 
@@ -231,11 +241,20 @@ def posicion_jugador2():
         table_gamep2[coordenada1_jugador2][coordenada2_jugador2] = "B"
         board_game_player_two(table_gamep2)
         barcosp2.append({"fila":coordenada1_jugador2,"col":coordenada2_jugador2})
-
+    raw_input("Enter para continuar...")
     return barcosp2
+
+def show_tables(coordenada1_jugador2,coordenada2_jugador1):
+    table_gamep2[coordenada1_jugador2][coordenada2_jugador2] = "-"
+    board_game_player_two(table_gamep2)
+
+
 
 
 def attack_player_one(battle_1):
+    clear()
+    board_game_player_two(table_gamep1)
+    board_game_player_two(attack_table_gamep2)
     attack1_p1 = raw_input("Player 1 ingresa la fila que quieres atacar!: ")
     attack2_p1 = raw_input("Player 1 ingresa la columna que quieres atacar!: ")
     a1 = answer_player1(attack1_p1,attack2_p1,battle_1)
@@ -244,66 +263,77 @@ def attack_player_one(battle_1):
 def answer_player1(guess_row,guess_column,battle_1):
     guess_column = int(guess_column)
     guess_row = int(guess_row)
-    print battle_1
 #El for verificara si acerto, si no acerto,se pasa al if.
     for co in battle_1:#se imprime cada barco en battle_1
-        print co
-        print co["fila"]
-        print co["col"]
         if guess_row == co["fila"] and guess_column == co["col"]:
             print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
             table_gamep2[guess_row][guess_column] = "x"
+            attack_table_gamep2[guess_row][guess_column] = "x"
             #board_game_player_one(table_gamep1)
-            board_game_player_two(table_gamep2)
+            board_game_player_two(table_gamep1)
+            board_game_player_two(attack_table_gamep2)
+            raw_input("Enter para continuar...")
             return 1 
     if (guess_row < 0 or guess_row >= 11) or (guess_column < 0 or guess_column >= 11):
         print "That is not in the ocean!!"
 #            print " "
         #board_game_player_one(table_gamep1)
-        board_game_player_two(table_gamep2)
+        board_game_player_two(table_gamep1)
+        board_game_player_two(attack_table_gamep2)
+
 
     elif table_gamep2[guess_row][guess_column] == "x":
         print "You said that!"
         #board_game_player_one(table_gamep1)
-        board_game_player_two(table_gamep2)
+        board_game_player_two(table_gamep1)
+        board_game_player_two(attack_table_gamep2)
     else:
         print "You didn't sunk my battleship!!!. juju"
         print " "
         table_gamep2[guess_row][guess_column] = "x"
-        board_game_player_two(table_gamep2)
+        attack_table_gamep2[guess_row][guess_column] = "x"
+        board_game_player_two(table_gamep1)
+        board_game_player_two(attack_table_gamep2)
 
 
 def attacK_player_two(battle_2):
+    clear()
+    board_game_player_one(table_gamep2)
+    board_game_player_two(attack_table_gamep1)
     attack1_p2 = raw_input("Player 2 Ingresa la fila que quieres atacar!: ")
     attack2_p2 = raw_input("Player 2 Ingresa la columna que quieres atacar!: ")
     a2 = answer_player2(attack1_p2,attack2_p2,battle_2)
 def answer_player2(guess_rowp2,guess_columnp2,battle_2):
     guess_columnp2 = int(guess_columnp2)
     guess_rowp2 = int(guess_rowp2)
-    print battle_2
     for co2 in battle_2:
-        print co2["fila"]
-        print co2["col"]
         if guess_rowp2 == co2["fila"] and guess_columnp2 == co2["col"]:
             print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
             table_gamep1[guess_rowp2][guess_columnp2] = "x"
-            board_game_player_one(table_gamep1)
+            attack_table_gamep1[guess_rowp2][guess_columnp2] = "x"
+            board_game_player_one(table_gamep2)
+            board_game_player_two(attack_table_gamep1)
+            raw_input("Enter para continuar...")
+
             return 1
     if (guess_rowp2 < 0 or guess_rowp2 >= 11) or (guess_columnp2 < 0 or guess_columnp2 >= 11):
         print "That is not in the ocean!!"
 #            print " "
-        board_game_player_one(table_gamep1)
-        #board_game_player_two(table_gamep2)
+        board_game_player_one(table_gamep2)
+        board_game_player_one(attack_table_gamep1)
 
     elif table_gamep1[guess_rowp2][guess_columnp2] == "x":
         print "You said that!"
-        board_game_player_one(table_gamep1)
-        #board_game_player_two(table_gamep2)
+        board_game_player_one(table_gamep2)
+        board_game_player_one(attack_table_gamep1)
     else:
         print "You didn't sunk my battleship!!!. juju"
         print " "
         table_gamep1[guess_rowp2][guess_columnp2] = "x"
-        board_game_player_one(table_gamep1)
+        attack_table_gamep2[guess_rowp2][guess_columnp2] = "x"
+        board_game_player_one(table_gamep2)
+        board_game_player_one(attack_table_gamep2)
+
 
 
 
@@ -332,7 +362,7 @@ def print_menu():
     print "                  2.Multiplayer."
     print "                  3.Instrucctions."
     print "                  4.Exit."
-    menu()
+
 
 def menu():
     answerusermenu = True
@@ -352,6 +382,13 @@ def menu():
             print "See you later, bye bye!!"
             sys.exit()
         else:
-            print "Insert the number or name to option"
+            clear()
+            print ""
+            print "     Insert the number or name to option."
+            print_menu()
 
-print_menu()
+def user_menu():
+    print_menu()
+    menu()
+
+user_menu()
