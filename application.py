@@ -11,9 +11,16 @@ table_gamep1 = []
 attack_table_gamep1 = []
 table_gamep2 = []
 attack_table_gamep2 = []
+#para imprimir
+print_table =[]
+
+count_ships_p1 = 0
+count_ships_p2 = 0
+
 def createTable():
     for column in range(0, 10):
         table_game.append(["-"] * 10)
+        print_table.append(["-"] * 10)
 createTable()
 
 def clear():
@@ -29,6 +36,7 @@ def clear_list():
     del table_gamep2[0:]
     del attack_table_gamep1[0:]
     del attack_table_gamep2[0:]
+    del print_table[0:]
     createTable()
     #board_game(table_game[0])
 
@@ -38,7 +46,7 @@ def play_again():
     answer_userplay = True
     while answer_userplay == True:
         time.sleep(2)
-        choose_user = raw_input("Do you want to play again y/n: ")
+        choose_user = raw_input("Do you want to play again y/n?: ")
         choose_user = choose_user.lower()
         if choose_user == "y":
             user_menu()
@@ -49,26 +57,35 @@ def play_again():
             print "Only can write -y- or -n- \n"
 
 
-def answer_user(guess_row,guess_column,battle_row,battle_column):
+def answer_user(guess_row,guess_column,battle):
+    """verifica si acerto o no, si no acerto se ira al if """
     guess_column = int(guess_column)
     guess_row = int(guess_row)
-    if guess_row == battle_row and guess_column == battle_column:
-        print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
-        table_game[guess_column][guess_row] = "x"
-        board_game(table_game)
-        play_again()
-    else:
-        if (guess_row < 0 or guess_row >= 11) or (guess_column < 0 or guess_column >= 11):
-            print "That is not in the ocean!!"
+    for c in battle:
+        if guess_row == c["row"] and guess_column == c["col"]:
+            print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
+            table_game[guess_column][guess_row] = "*"
+            print_table[guess_column][guess_row] = "*"
+            board_game(table_game)
+            return 1
+
+
+    if (guess_row < 0 or guess_row >= 10) or (guess_column < 0 or guess_column >= 10):
+        print "That is not in the ocean!!"
 #            print " "
-            board_game(table_game)
-        elif table_game[guess_row][guess_column] == "x":
-            print "You said that!"
-            board_game(table_game)
-        else:
-            print "You didn't sunk my battleship, You didn't sunk my battleship!!!. juju"
-            print " "
-            table_game[guess_row][guess_column] = "x"
+        board_game(table_game)
+        return 0
+    elif table_game[guess_row][guess_column] == "x":
+        print "You said that!"
+        board_game(table_game)
+        return 0
+    else:
+        print "You didn't sunk my battleship, You didn't sunk my battleship!!!. juju"
+        print " "
+        table_game[guess_row][guess_column] = "x"
+        print_table[guess_column][guess_row] = "x"
+        board_game(table_game)
+        return 0
 
 #*****************Board game***********************
 
@@ -83,7 +100,20 @@ def board_game(table_game):
         print "|" + "|".join(row) + "|" + str(number)#function join () will remove the "" lists.
         number+=1
 
+#*****************Board game b1 ***********************
 
+def generate_board_game():
+    for column in range(0, 10):
+        table_game_b1.append(["-"] * 10)
+
+def board_game(table_game_b1):
+    print " 0 1 2 3 4 5 6 7 8 9"
+    number = 0
+    for row in table_game_b1:
+        print "|" + "|".join(row) + "|" + str(number)#function join () will remove the "" lists.
+        number+=1
+
+#*************************Multiplayer****************************
 #*****************Board game player 1***********************
 
 def generate_board_game_player_one():
@@ -125,42 +155,110 @@ def random_row(table_game):
 def random_column(table_game):
     return random.randint(0, len(table_game[0])-1)
 
+def Number_random():
+    return random.randint(1,5)
+
+b1 = [{"row":1,"col":1},{"row":2,"col":2},{"row":3,"col":3},{"row":4,"col":4},{"row":5,"col":5},{"row":6,"col":6},{"row":7,"col":7},{"row":8,"col":8},{"row":9,"col":9},{"row":0,"col":9},{"row":1,"col":8},{"row":2,"col":7},{"row":3,"col":6},{"row":4,"col":5},{"row":5,"col":4},{"row":6,"col":3},{"row":7,"col":2},{"row":8,"col":1},{"row":9,"col":0}]
+b2 = [{"row":0,"col":2},{"row":0,"col":3},{"row":0,"col":4},{"row":0,"col":5},{"row":0,"col":6},{"row":0,"col":7},{"row":0,"col":8},{"row":1,"col":1},{"row":2,"col":1},{"row":3,"col":1},{"row":3,"col":2},{"row":3,"col":3},{"row":3,"col":4},{"row":3,"col":5},{"row":3,"col":6},{"row":3,"col":7},{"row":3,"col":8},{"row":6,"col":1},{"row":6,"col":2},{"row":6,"col":3},{"row":6,"col":4},{"row":6,"col":5},{"row":7,"col":5},{"row":8,"col":5},{"row":9,"col":5},{"row":9,"col":4},{"row":9,"col":3},{"row":9,"col":2},{"row":9,"col":1}]
+b3 = [{"row":0,"col":2},{"row":4,"col":0},{"row":7,"col":0},{"row":0,"col":2},{"row":6,"col":1},{"row":2,"col":2},{"row":4,"col":2},{"row":0,"col":4},{"row":2,"col":4},{"row":3,"col":4},{"row":2,"col":5},{"row":6,"col":5},{"row":7,"col":5},{"row":7,"col":8},{"row":2,"col":2},{"row":1,"col":8},{"row":7,"col":8},{"row":5,"col":7},{"row":7,"col":7}]
+b4 = [{"row":0,"col":2},{"row":4,"col":0},{"row":1,"col":2},{"row":6,"col":0},{"row":5,"col":2},{"row":9,"col":2},{"row":0,"col":4},{"row":3,"col":4},{"row":7,"col":5},{"row":0,"col":7},{"row":6,"col":7},{"row":3,"col":8},{"row":9,"col":9},{"row":5,"col":5}]
+b5 = [{"row":1,"col":1},{"row":2,"col":2},{"row":5,"col":5},{"row":5,"col":1},{"row":9,"col":0},{"row":8,"col":8},{"row":8,"col":2},{"row":4,"col":3},{"row":7,"col":3},{"row":2,"col":4},{"row":6,"col":4},{"row":8,"col":4},{"row":9,"col":5},{"row":1,"col":5},{"row":4,"col":6},{"row":2,"col":7},{"row":8,"col":7},{"row":5,"col":8},{"row":9,"col":9},{"row":7,"col":9},{"row":4,"col":9},{"row":1,"col":9}]
+b6 = [{"row":0,"col":1},{"row":1,"col":1},{"row":2,"col":1},{"row":4,"col":9},{"row":5,"col":9},{"row":3,"col":3},{"row":3,"col":4},{"row":3,"col":5},{"row":0,"col":7},{"row":0,"col":8},{"row":7,"col":9},{"row":7,"col":8},{"row":7,"col":7},{"row":7,"col":6},{"row":7,"col":5}]
+b7 = [{"row":5,"col":0},{"row":5,"col":1},{"row":4,"col":2},{"row":3,"col":2},{"row":2,"col":2},{"row":8,"col":4},{"row":7,"col":4},{"row":9,"col":5},{"row":9,"col":4},{"row":9,"col":3},{"row":5,"col":6},{"row":4,"col":6},{"row":3,"col":6},{"row":2,"col":6},{"row":1,"col":6}]
+
 def random_play():
-    battle_row = random_row(table_game)
-    battle_column = random_column(table_game)
-    return battle_row,battle_column
+    #table = " "
 
+    #battle_row = random_row(table_game)
+    #battle_column = random_column(table_game)
+    #return battle_row,battle_column
+    number = Number_random()
+    print number
+    if number == 1:
+        table = b1
+        for boat in table:
+            print_table[boat["row"]][boat["col"]] = "A"
+        return table
+    elif number == 2:
+        table = b2
+        for boat in table:
+            print_table[boat["row"]][boat["col"]] = "B"
+        return table
+    elif number == 3:
+        table = b3
+        for boat in table:
+            print_table[boat["row"]][boat["col"]] = "C"
+        return table
+    elif number == 4:
+        table = b4
+        for boat in table:
+            print_table[boat["row"]][boat["col"]] = "D"
+        return table
+    elif number == 5:
+        table = b5
+        for boat in table:
+            print_table[boat["row"]][boat["col"]] = "E"
+        return table
+    elif number == 6:
+        table = b6
+        for boat in table:
+            print_table[boat["row"]][boat["col"]] = "F"
+        return table
+    elif number == 7:
+        table = b7
+        for boat in table:
+            print_table[boat["row"]][boat["col"]] = "G"
+        return table
+
+
+points_single = 0
 def ask_user():
-    battle_row,battle_column = random_play()
-    print battle_row
-    print battle_column
-
-    def turnos():
+    battle = random_play()
+    #print battle_row
+    #print battle_column
+    points_single = 0
+    board_game(table_game)
+    def turns():
         #clear_list()
         #clear()
-        board_game(table_game)
+
         print ""
-        print "Your turn is ", turno
+        print "Your turn is ", turn
         print ""
         guess_row = raw_input("Guess row: ")
         guess_column = raw_input("Guess column: ")
+
         if False == guess_row.isdigit():
             print "insert numbers"
         else:
-            answer_user(guess_row,guess_column,battle_row,battle_column)
+            score_2 = answer_user(guess_row,guess_column,battle)
+            #global points_single
+            #points_single = points_single + score_2
+            #return points_single
     answeruserask = True
     while answeruserask == True:
-        turno = 0
-        for turno in range(1,5):
-            if turno == 4:
-                turnos()
+        turn = 0
+        for turn in range(1,5):
+            if turn == 4:
+                turns()
                 board_game(table_game)
                 print "Game over!!!"
-                print "My ship it is in the row:",battle_row, "and the column:",battle_column
+                print 'The ships that you sunk, are marked with "*"'
+                print 'The shots that you trumped, are marked with "x"'
+                # print "Derivaste ", a ," barcos..."
+                # points_single  = 0
+                board_game(print_table)
+                # for a in battle:
+                #     print "My ship it is in the row:",a["row"], "and the column:",a["col"]
                 play_again()
                 answeruserask = False
             else:
-                turnos()
+                turns()
+boot  = []
+
+
+
+# ****************Multi player ****************
 
 def player_Multi():
     #user_menu()
@@ -171,28 +269,32 @@ def player_Multi():
         board_gamep2 = generate_board_game_player_two()
         #print board_game_player_one(table_gamep1)
         #answer_player1(coordenada1_jugador1,coordenada2_jugador1)
-        battle_1 = posicion_jugador1()
-        battle_2 = posicion_jugador2()
-        turn = turnos(battle_1,battle_2)
+        battle_1 = position_player1()
+        battle_2 = position_player2()
+        turn = turns(battle_1,battle_2)
     clear()
     user_menu()
 
-def turnos(battle_1,battle_2):
+def turns(battle_1,battle_2):
     puntosp1 = 0
     puntosp2 = 0
+    global count_ships_p1
+    global count_ships_p2
+    count_ships_p1 = count_ships_p1 * 0
+    count_ships_p2 = count_ships_p2 * 0
     for x in range(1,5):
-        print "su turno es",x       
-        a1 = attack_player_one(battle_2)#aqui uso los barcos como parametros para luego poder utilizarlos en la funcion de abajo.
+        print "Your turn is",x
+        a1 = attack_player_one(battle_2)#aboatui uso los barcos como parametros para luego poder utilizarlos en la funcion de abajo.
         if a1 == None:
             #print "derivaste todos los barcos"
             pass
         else:
             puntosp1 = puntosp1 + a1
             if puntosp1 == 2:
-                print "Derivaste todos los barcos"
+                print "You derived all ships"
                 break
 
-        print "su turno es",x  
+        print "Your turn is",x
         a2 = attacK_player_two(battle_1)
         if a2 == None:
             #print "derivaste todos los barcos"
@@ -200,139 +302,184 @@ def turnos(battle_1,battle_2):
         else:
             puntosp2 = puntosp2 + a2
             if puntosp2 == 2:
-                print "Derivaste todos los barcos"
+                print "You derived all ships"
                 break
 
-    m = raw_input("quieres jugar de nuevo y/n?: ")
+    m = raw_input("Do you want to play again y/n?")
     if m == "y":
         return True
     else:
         return False
 
-
-def posicion_jugador1():
+def position_player1():
     clear()
-    barcos = []
+    barcosp1 = []
     for cord in range(1,3):
+            number_repeatp1 = True
+            while number_repeatp1 == True:
 
-        print"PLAYER ONE"
-        print "Ingrese la Coordenada donde quiere ocultar su barco."
-        coordenada1_jugador1 = input("--> Inserta fila: ")
-        coordenada2_jugador1 = input("--> Inserta columna: ")
-    #    coordenada_jugador = coordenadas_barco()
-        table_gamep1[coordenada1_jugador1][coordenada2_jugador1] = "H"
-        board_game_player_one(table_gamep1)
-        barcos.append({"fila":coordenada1_jugador1,"col":coordenada2_jugador1})#aqui se aguarda las corrdenadas ingresadas por el usuario
-    return barcos
+                print"PLAYER ONE"
+                print "Insert the coordinate, where  you want  to conceal your ship."
+                coordinate1_player1 = input("--> Insert row: ")
+                coordinate2_player1 = input("--> Insert column: ")
+            #    coordenada_jugador = coordenadas_barco()
+                 
+                if len(barcosp1) == 0:
+                    table_gamep1[coordinate1_player1][coordinate2_player1] = "H"
+                    board_game_player_one(table_gamep1)
+                    barcosp1.append({"row":coordinate1_player1,"col":coordinate2_player1})#aboatui se aguarda las corrdenadas ingresadas por el usuario
+                    number_repeatp1 = False
+                else:
+                    if table_gamep1[coordinate1_player1][coordinate2_player1] == "H":
+                        clear()
+                        print "That position not found..."
+                        number_repeatp1 = True
+                    else:
+                        table_gamep1[coordinate1_player1][coordinate2_player1] = "H"
+                        board_game_player_one(table_gamep1)
+                        barcosp1.append({"row":coordinate1_player1,"col":coordinate2_player1})#aboatui se aguarda las corrdenadas ingresadas por el usuario
+                        number_repeatp1 = False
+    raw_input("Press enter to continue...")                
+    return barcosp1
 
 
 
-def posicion_jugador2():
-    raw_input("Enter para continuar...")
+
+def position_player2():
     clear()
     barcosp2 = []
     for cordp2 in range(1,3):
-
-        print "PLAYER TWO"
-        print "Ingrese la Coordenada donde quiere ocultar su barco."
-        coordenada1_jugador2 = input("--> Inserta fila: ")
-        coordenada2_jugador2 = input("--> Inserta columna: ")
-    #    coordenada_jugador = coordenadas_barco()
-        table_gamep2[coordenada1_jugador2][coordenada2_jugador2] = "B"
-        board_game_player_two(table_gamep2)
-        barcosp2.append({"fila":coordenada1_jugador2,"col":coordenada2_jugador2})
-    raw_input("Enter para continuar...")
+        number_repeatp2 = True
+        while number_repeatp2 == True:
+            print "PLAYER TWO"
+            print "Insert the coordinate, where  you want  to conceal your ship."
+            coordinate1_player2 = input("--> Insert row: ")
+            coordinate2_player2 = input("--> Insert column: ")
+            if len (barcosp2) == 0:
+                table_gamep2[coordinate1_player2][coordinate2_player2] = "B"
+                board_game_player_two(table_gamep2)
+                barcosp2.append({"row":coordinate1_player2,"col":coordinate2_player2})
+                number_repeatp2 = False
+            else:
+                if attack_table_gamep2[coordinate1_player2][coordinate2_player2] == "B":
+                    print "That position not found..."
+                    clear()
+                    number_repeatp2 = True
+                else:
+                    table_gamep2[coordinate1_player2][coordinate2_player2] = "B"
+                    board_game_player_two(table_gamep2)
+                    barcosp2.append({"row":coordinate1_player2,"col":coordinate2_player2})
+                    number_repeatp2 = False
+    raw_input("Press enter to continue..")
+    clear()
     return barcosp2
-
-def show_tables(coordenada1_jugador2,coordenada2_jugador1):
-    table_gamep2[coordenada1_jugador2][coordenada2_jugador2] = "-"
-    board_game_player_two(table_gamep2)
-
-
 
 
 def attack_player_one(battle_1):
-    clear()
-    board_game_player_two(table_gamep1)
+#    clear()
+    board_game_player_one(table_gamep1)
     board_game_player_two(attack_table_gamep2)
-    attack1_p1 = raw_input("Player 1 ingresa la fila que quieres atacar!: ")
-    attack2_p1 = raw_input("Player 1 ingresa la columna que quieres atacar!: ")
+    attack1_p1 = raw_input("Player 1, insert the row that you want attack!: ")
+    attack2_p1 = raw_input("Player 1, insert the column that you want attack!: ")
     a1 = answer_player1(attack1_p1,attack2_p1,battle_1)
     return a1
 
 def answer_player1(guess_row,guess_column,battle_1):
     guess_column = int(guess_column)
     guess_row = int(guess_row)
+    global count_ships_p1
 #El for verificara si acerto, si no acerto,se pasa al if.
     for co in battle_1:#se imprime cada barco en battle_1
-        if guess_row == co["fila"] and guess_column == co["col"]:
+
+        if guess_row == co["row"] and guess_column == co["col"]:
+            clear()
             print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
-            table_gamep2[guess_row][guess_column] = "x"
-            attack_table_gamep2[guess_row][guess_column] = "x"
+            count_ships_p1 = count_ships_p1 + 1
+            table_gamep2[guess_row][guess_column] = "*"
+            attack_table_gamep2[guess_row][guess_column] = "*"
             #board_game_player_one(table_gamep1)
-            board_game_player_two(table_gamep1)
+            board_game_player_one(table_gamep1)
             board_game_player_two(attack_table_gamep2)
-            raw_input("Enter para continuar...")
-            return 1 
-    if (guess_row < 0 or guess_row >= 11) or (guess_column < 0 or guess_column >= 11):
+            print "You sunk ",count_ships_p1, "of ",len(battle_1) 
+            raw_input("Press enter to continue...")
+            return 1
+    if (guess_row < 0 or guess_row >= 10) or (guess_column < 0 or guess_column >= 10):
+        clear()
         print "That is not in the ocean!!"
-#            print " "
-        #board_game_player_one(table_gamep1)
-        board_game_player_two(table_gamep1)
+        board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
-
-
+        print "You sunk ",count_ships_p1, "of ",len(battle_1)
+        raw_input("Press enter to continue...")
     elif table_gamep2[guess_row][guess_column] == "x":
+        clear()
         print "You said that!"
-        #board_game_player_one(table_gamep1)
-        board_game_player_two(table_gamep1)
+        board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
+        print "You sunk ",count_ships_p1, "of ",len(battle_1)
+        raw_input("Press enter to continue...")
     else:
+        clear()
         print "You didn't sunk my battleship!!!. juju"
         print " "
         table_gamep2[guess_row][guess_column] = "x"
         attack_table_gamep2[guess_row][guess_column] = "x"
-        board_game_player_two(table_gamep1)
+        board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
+        print "You sunk ",count_ships_p1, "of ",len(battle_1)
+        raw_input("Press enter to continue...")
+
 
 
 def attacK_player_two(battle_2):
-    clear()
-    board_game_player_one(table_gamep2)
-    board_game_player_two(attack_table_gamep1)
-    attack1_p2 = raw_input("Player 2 Ingresa la fila que quieres atacar!: ")
-    attack2_p2 = raw_input("Player 2 Ingresa la columna que quieres atacar!: ")
+#    clear()
+    board_game_player_two(table_gamep2)
+    board_game_player_one(attack_table_gamep1)
+    attack1_p2 = raw_input("Player 2, insert the row that you want attack!: ")
+    attack2_p2 = raw_input("Player 2, insert the column that you want attack!: ")
     a2 = answer_player2(attack1_p2,attack2_p2,battle_2)
+    return a2
 def answer_player2(guess_rowp2,guess_columnp2,battle_2):
     guess_columnp2 = int(guess_columnp2)
     guess_rowp2 = int(guess_rowp2)
+    global count_ships_p2
     for co2 in battle_2:
-        if guess_rowp2 == co2["fila"] and guess_columnp2 == co2["col"]:
+        if guess_rowp2 == co2["row"] and guess_columnp2 == co2["col"]:
+            clear()
             print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
-            table_gamep1[guess_rowp2][guess_columnp2] = "x"
-            attack_table_gamep1[guess_rowp2][guess_columnp2] = "x"
-            board_game_player_one(table_gamep2)
-            board_game_player_two(attack_table_gamep1)
-            raw_input("Enter para continuar...")
+            count_ships_p2 = count_ships_p2 + 1
+            table_gamep1[guess_rowp2][guess_columnp2] = "*"
+            attack_table_gamep1[guess_rowp2][guess_columnp2] = "*"
+            board_game_player_two(table_gamep2)
+            board_game_player_one(attack_table_gamep1)
+            print "You sunk ",count_ships_p2," of", len(battle_2)
+            raw_input("Press enter to continue...")
 
             return 1
-    if (guess_rowp2 < 0 or guess_rowp2 >= 11) or (guess_columnp2 < 0 or guess_columnp2 >= 11):
+    if (guess_rowp2 < 0 or guess_rowp2 >= 10) or (guess_columnp2 < 0 or guess_columnp2 >= 10):
         print "That is not in the ocean!!"
 #            print " "
-        board_game_player_one(table_gamep2)
+        board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep1)
+        print "You sunk ",count_ships_p2, " of",len(battle_2)
+        raw_input("Press enter to continue...")
 
     elif table_gamep1[guess_rowp2][guess_columnp2] == "x":
+        clear()
         print "You said that!"
-        board_game_player_one(table_gamep2)
+        board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep1)
+        print "You sunk ",count_ships_p2," of", len(battle_2)
+        raw_input("Press enter to continue...")
     else:
+        clear()
         print "You didn't sunk my battleship!!!. juju"
         print " "
         table_gamep1[guess_rowp2][guess_columnp2] = "x"
         attack_table_gamep2[guess_rowp2][guess_columnp2] = "x"
-        board_game_player_one(table_gamep2)
+        board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep2)
+        print"You sunk ",count_ships_p2," of", len(battle_2)
+        raw_input("Press enter to continue...")
 
 
 
@@ -341,21 +488,35 @@ def answer_player2(guess_rowp2,guess_columnp2,battle_2):
 
 def instructions_game():
     print ""
-    print "You can only insert numbers for 0 to 9 "
-    print ""
+    print "                   Hi !!"
+    print "          Welcome to Battleship !!"
+    print "1. If you be a single player:"
+    print "     All boats are random if you're lucky,"
+    print "     you can leave one position boats"
+    print "     and if you will not come much bigger boats"
+    print " "
+    print "2. If you be someting of palyers:"
+    print "     you can to hide your own ships in anywhere of the ocean"
+    print " "
+    print "3. You can only insert numbers for 0 to 9."
+    print " "
+    raw_input("Press enter to continue...")
+    clear()
+    user_menu()
 
 
 def player_vs_bot():
     #clear_list()
     print "Single player"
+    #posicion()
     ask_user()
 
 def print_menu():
-#    clear()
+
 #    clear_list()
     print ""
     print "===================================================="
-    print "==              Welcome to Battle Ship            =="
+    print "=               Welcome to Battle Ship             ="
     print "===================================================="
     print " "
     print "                  1.One player."
