@@ -118,7 +118,7 @@ def answer_user(guess_row,guess_column,battle):
 #            print " "
         board_game(table_game)
         return 0
-    elif table_game[guess_row][guess_column] == "x":
+    elif table_game[guess_row][guess_column] == "x" or table_game[guess_row][guess_column] == "*":
         clear()
         print "You said that!"
         board_game(table_game)
@@ -359,7 +359,7 @@ def turns(battle_1,battle_2):
 def position_player1():
     clear()
     barcosp1 = []
-    for cord in range(1,4):
+    for cord in range(1,5):
             number_repeatp1 = True
             while number_repeatp1 == True:
                 print"PLAYER ONE"
@@ -370,9 +370,12 @@ def position_player1():
                     coordinate2_player1 = raw_input("--> Insert column: ")
                     if False == coordinate1_player1.isdigit() or False == coordinate2_player1.isdigit():
                         print "Insert numbers."
+                        verific_position_p1 = True
+
                     else:
+                        print "HOlii!"
                         verific_position_p1 = False
-                    verific_position_p1 = ver_hor_p1(coordinate1_player1,coordinate2_player1)
+                        verific_position_p1 = ver_hor_p1(coordinate1_player1,coordinate2_player1)
             #    coordenada_jugador = coordenadas_barco()
                 coordinate1_player1 = int(coordinate1_player1)
                 coordinate2_player1 = int(coordinate2_player1)
@@ -411,27 +414,31 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
                 p1 = coordinate1_player1 + 1
                 p2 = p1 + 1
                 p3 = p2 + 1
-
-                if coordinate1_player1 > 9 or p1 > 9 or p2 > 9 or p3 > 9:
+                p4 = p3 +1
+                if coordinate1_player1 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9:
                     print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
                     return True
                 else:
                     if table_gamep1[p1][coordinate2_player1] == "H":
-                        print "esa posicion ya existe"
+                        print "This position already exists"
                         return True
                     else:
                         table_gamep1[p1][coordinate2_player1] = "H"
                         if table_gamep1[p2][coordinate2_player1] == "H":
-                            print "esa posicion ya existe"
+                            print "This position already exists"
                             return True
                         else:
                             table_gamep1[p2][coordinate2_player1] = "H"
                             if table_gamep1[p3][coordinate2_player1] == "H":
-                                print "esa posicion ya existe"
+                                print "This position already exists"
                                 return True
                             else:
                                 table_gamep1[p3][coordinate2_player1] = "H"
-
+                                if table_gamep1[p4][coordinate2_player1] == "H":
+                                    print "This position already exists"
+                                    return True
+                                else:
+                                    table_gamep1[p4][coordinate2_player1] = "H"
                         return False
                 #table_gamep1[p2][coordinate2_player1] = "H"
                 h_v_userp1 = False
@@ -443,7 +450,8 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
             p1 = coordinate2_player1 + 1
             p2 = p1 + 1
             p3 = p2 + 1
-            if coordinate1_player1 > 9 or p1 > 9 or p2 > 9 or p3 > 9:
+            p4 = p3 + 1
+            if coordinate1_player1 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9:
                 print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
                 return True
             else:
@@ -453,15 +461,20 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
                 else:
                     table_gamep1[coordinate1_player1][p1] = "H"
                     if table_gamep1[coordinate1_player1][p2] == "H":
-                        print "esa posicion ya existe"
+                        print "This position already exists"
                         return True
                     else:
                         table_gamep1[coordinate1_player1][p2] = "H"
                         if table_gamep1[coordinate1_player1][p3] == "H":
-                            print "esa posicion ya existe"
+                            print "This position already exists"
                             return True
                         else:
                             table_gamep1[coordinate1_player1][p3] = "H"
+                            if table_gamep1[coordinate1_player1][p4] == "H":
+                                print "This position already exists"
+                                return True
+                            else:
+                                table_gamep1[coordinate1_player1][p4] = "H"
 
                     return False
             h_v_userp1 = False
@@ -472,11 +485,10 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
             print "            : o :"
             print "Only write horizontal or vertical, please!"
 
-
 def position_player2():
     clear()
     barcosp2 = []
-    for cordp2 in range(1,3):
+    for cordp2 in range(1,5):
         number_repeatp2 = True
         while number_repeatp2 == True:
             print "PLAYER TWO"
@@ -486,10 +498,11 @@ def position_player2():
                 coordinate1_player2 = raw_input("--> Insert row: ")
                 coordinate2_player2 = raw_input("--> Insert column: ")
                 if False == coordinate1_player2.isdigit() or False == coordinate2_player2.isdigit():
-                    print "Insert numbers."
+                    print "Insert numbers player TWO."
+                    verific_position_p2 = True
                 else:
                     verific_position_p2 = False
-                verific_position_p2 = ver_hor_p2(coordinate1_player2,coordinate2_player2)
+                    verific_position_p2 = ver_hor_p2(coordinate1_player2,coordinate2_player2)
                 coordinate1_player2 = int(coordinate1_player2)
                 coordinate2_player2 = int(coordinate2_player2)
                 if len (barcosp2) == 0:
@@ -526,8 +539,8 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
             p1 = coordinate1_player2 + 1
             p2 = p1 + 1
             p3 = p2 + 1
-
-            if coordinate1_player2 > 9 or p1 > 9 or p2 > 9 or p3 > 9:
+            p4 = p3 +1
+            if coordinate1_player2 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9:
                 print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
                 return True
             else:
@@ -546,6 +559,11 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
                             return True
                         else:
                             table_gamep2[p3][coordinate2_player2] = "B"
+                            if attack_table_gamep2[p4][coordinate2_player2] == "B":
+                                print"This position already exists"
+                                return True
+                            else:
+                                attack_table_gamep2[p4][coordinate2_player2] = "B"
 
                         return False
                 #table_gamep1[p2][coordinate2_player1] = "H"
@@ -555,11 +573,11 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
 
         elif user_v_hp2 == "horizontal":
             print "asdasdd"
-
             p1 = coordinate2_player2 + 1
             p2 = p1 + 1
             p3 = p2 + 1
-            if coordinate1_player2 > 9 or p1 > 9 or p2 > 9 or p3 > 9:
+            p4 = p3 + 1
+            if coordinate1_player2 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9:
                 print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
                 return True
             else:
@@ -578,6 +596,11 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
                             return True
                         else:
                             table_gamep2[coordinate1_player2][p3] = "B"
+                            if table_gamep2[coordinate1_player2][p4] == "B":
+                                print "This position already exists."
+                                return True
+                            else:
+                                table_gamep2[coordinate1_player2][p4] = "B"
 
                     return False
             h_v_userp2 = False
@@ -719,7 +742,7 @@ def instructions_game():
     print "     you can leave one position boats"
     print "     and if you will not come much bigger boats"
     print " "
-    print "2. If you be someting of palyers:"
+    print "2. If you be someting of players:"
     print "     you can to hide your own ships in anywhere of the ocean"
     print " "
     print "3. You can only insert numbers for 0 to 9."
