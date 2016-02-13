@@ -1,46 +1,4 @@
-#coding:utf-8
-#{[],[]} lista de lista
-import random
-import sys
-import os
-import time
-#single player
-table_game = []
-#multi player
-table_gamep1 = []
-attack_table_gamep1 = []
-table_gamep2 = []
-attack_table_gamep2 = []
-#para imprimir
-print_table =[]
-
-count_ships_p1 = 0
-count_ships_p2 = 0
-
-def createTable():
-    for column in range(0, 10):
-        table_game.append(["-"] * 10)
-        print_table.append(["-"] * 10)
-createTable()
-
-def clear():
-    """Cleans the data on screen."""
-    if os.name == "posix":
-        os.system("reset")
-    elif os.name == ("nt"):
-        os.system("cls")
-
-def clear_list():
-    del table_game[0:]
-    del table_gamep1[0:]
-    del table_gamep2[0:]
-    del attack_table_gamep1[0:]
-    del attack_table_gamep2[0:]
-    del print_table[0:]
-    createTable()
-    #board_game(table_game[0])
-
-#coding:utf-8
+#_*_coding: utf-8 _*_
 #{[],[]} lista de lista
 import random
 import sys
@@ -91,6 +49,7 @@ def play_again():
         choose_user = raw_input("Do you want to play again y/n?: ")
         choose_user = choose_user.lower()
         if choose_user == "y":
+            clear()
             user_menu()
         elif choose_user == "n":
             print "Good bye"
@@ -107,6 +66,7 @@ def answer_user(guess_row,guess_column,battle):
         if guess_row == c["row"] and guess_column == c["col"]:
             clear()
             print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
+            raw_input("Press enter to continue...")
             table_game[guess_row][guess_column] = "*"
             print_table[guess_row][guess_column] = "*"
             board_game(table_game)
@@ -115,18 +75,21 @@ def answer_user(guess_row,guess_column,battle):
     if (guess_row < 0 or guess_row >= 10) or (guess_column < 0 or guess_column >= 10):
         clear()
         print "That is not in the ocean!!"
+        raw_input("Press enter to continue: ")
 #            print " "
         board_game(table_game)
         return 0
     elif table_game[guess_row][guess_column] == "x" or table_game[guess_row][guess_column] == "*":
         clear()
         print "You said that!"
+        raw_input("Press enter to continue: ")
         board_game(table_game)
         return 0
     else:
         clear()
-        print "You didn't sunk my battleship, You didn't sunk my battleship!!!. juju"
+        print " You didn't sunk my battleship!!!. juju"
         print " "
+        raw_input("Press enter to continue: ")
         table_game[guess_row][guess_column] = "x"
         print_table[guess_column][guess_row] = "x"
         board_game(table_game)
@@ -203,9 +166,9 @@ def random_column(table_game):
 def Number_random():
     return random.randint(1,5)
 
-b1 = [{"row":1,"col":1},{"row":2,"col":2},{"row":3,"col":3},{"row":4,"col":4},{"row":5,"col":5},{"row":6,"col":6},{"row":7,"col":7},{"row":8,"col":8},{"row":9,"col":9},{"row":0,"col":9},{"row":1,"col":8},{"row":2,"col":7},{"row":3,"col":6},{"row":4,"col":5},{"row":5,"col":4},{"row":6,"col":3},{"row":7,"col":2},{"row":8,"col":1},{"row":9,"col":0}]
+b1 = [{"row":1,"col":1},{"row":2,"col":2},{"row":3,"col":3},{"row":4,"col":4},{"row":5,"col":5},{"row":6,"col":6},{"row":7,"col":7},{"row":8,"col":8},{"row":1,"col":8},{"row":2,"col":7},{"row":3,"col":6},{"row":4,"col":5},{"row":5,"col":4},{"row":6,"col":3},{"row":7,"col":2},{"row":8,"col":1}]
 b2 = [{"row":0,"col":2},{"row":0,"col":3},{"row":0,"col":4},{"row":0,"col":5},{"row":0,"col":6},{"row":0,"col":7},{"row":0,"col":8},{"row":1,"col":1},{"row":2,"col":1},{"row":3,"col":1},{"row":3,"col":2},{"row":3,"col":3},{"row":3,"col":4},{"row":3,"col":5},{"row":3,"col":6},{"row":3,"col":7},{"row":3,"col":8},{"row":6,"col":1},{"row":6,"col":2},{"row":6,"col":3},{"row":6,"col":4},{"row":6,"col":5},{"row":7,"col":5},{"row":8,"col":5},{"row":9,"col":5},{"row":9,"col":4},{"row":9,"col":3},{"row":9,"col":2},{"row":9,"col":1}]
-b3 = [{"row":0,"col":2},{"row":4,"col":0},{"row":7,"col":0},{"row":0,"col":2},{"row":6,"col":1},{"row":2,"col":2},{"row":4,"col":2},{"row":0,"col":4},{"row":2,"col":4},{"row":3,"col":4},{"row":2,"col":5},{"row":6,"col":5},{"row":7,"col":5},{"row":7,"col":8},{"row":2,"col":2},{"row":1,"col":8},{"row":7,"col":8},{"row":5,"col":7},{"row":7,"col":7}]
+b3 = [{"row":0,"col":2},{"row":4,"col":0},{"row":7,"col":0},{"row":6,"col":1},{"row":2,"col":2},{"row":4,"col":2},{"row":0,"col":4},{"row":2,"col":4},{"row":3,"col":4},{"row":2,"col":5},{"row":6,"col":5},{"row":7,"col":5},{"row":7,"col":8},{"row":1,"col":8},{"row":7,"col":8},{"row":5,"col":7},{"row":7,"col":7}]
 b4 = [{"row":0,"col":2},{"row":4,"col":0},{"row":1,"col":2},{"row":6,"col":0},{"row":5,"col":2},{"row":9,"col":2},{"row":0,"col":4},{"row":3,"col":4},{"row":7,"col":5},{"row":0,"col":7},{"row":6,"col":7},{"row":3,"col":8},{"row":9,"col":9},{"row":5,"col":5}]
 b5 = [{"row":1,"col":1},{"row":2,"col":2},{"row":5,"col":5},{"row":5,"col":1},{"row":9,"col":0},{"row":8,"col":8},{"row":8,"col":2},{"row":4,"col":3},{"row":7,"col":3},{"row":2,"col":4},{"row":6,"col":4},{"row":8,"col":4},{"row":9,"col":5},{"row":1,"col":5},{"row":4,"col":6},{"row":2,"col":7},{"row":8,"col":7},{"row":5,"col":8},{"row":9,"col":9},{"row":7,"col":9},{"row":4,"col":9},{"row":1,"col":9}]
 b6 = [{"row":0,"col":1},{"row":1,"col":1},{"row":2,"col":1},{"row":4,"col":9},{"row":5,"col":9},{"row":3,"col":3},{"row":3,"col":4},{"row":3,"col":5},{"row":0,"col":7},{"row":0,"col":8},{"row":7,"col":9},{"row":7,"col":8},{"row":7,"col":7},{"row":7,"col":6},{"row":7,"col":5}]
@@ -261,6 +224,8 @@ def ask_user():
     battle = random_play()
     #print battle_row
     #print battle_column
+    #clear()
+    print "Single Player"
     points_single = 0
     board_game(table_game)
     def turns():
@@ -272,9 +237,13 @@ def ask_user():
         print ""
         guess_row = raw_input("Guess row: ")
         guess_column = raw_input("Guess column: ")
+        clear()
 
         if False == guess_row.isdigit():
+           # clear()
             print "insert numbers"
+            board_game(table_game)
+            
         else:
             score_2 = answer_user(guess_row,guess_column,battle)
             #global points_single
@@ -287,6 +256,7 @@ def ask_user():
             if turn == 4:
                 turns()
                 board_game(table_game)
+                clear()
                 print "Game over!!!"
                 print 'The ships that you sunk, are marked with "*"'
                 print 'The shots that you trumped, are marked with "x"'
@@ -349,7 +319,9 @@ def turns(battle_1,battle_2):
             if puntosp2 == 2:
                 print "You derived all ships"
                 break
+    try_play()
 
+def try_play():
     m = raw_input("Do you want to play again y/n?")
     if m == "y":
         return True
@@ -357,7 +329,7 @@ def turns(battle_1,battle_2):
         return False
 
 def position_player1():
-    clear()
+#    clear()
     barcosp1 = []
     for cord in range(1,5):
             number_repeatp1 = True
@@ -371,31 +343,34 @@ def position_player1():
                     if False == coordinate1_player1.isdigit() or False == coordinate2_player1.isdigit():
                         print "Insert numbers."
                         verific_position_p1 = True
-
                     else:
-                        print "HOlii!"
                         verific_position_p1 = False
                         verific_position_p1 = ver_hor_p1(coordinate1_player1,coordinate2_player1)
             #    coordenada_jugador = coordenadas_barco()
                 coordinate1_player1 = int(coordinate1_player1)
                 coordinate2_player1 = int(coordinate2_player1)
-                print "salio del while"
                 if len(barcosp1) == 0:
                     table_gamep1[coordinate1_player1][coordinate2_player1] = "H"
                     board_game_player_one(table_gamep1)
                     barcosp1.append({"row":coordinate1_player1,"col":coordinate2_player1})#aboatui se aguarda las corrdenadas ingresadas por el usuario
+                    raw_input("press enter")
+                    clear()
                     number_repeatp1 = False
                 else:
-                    if table_gamep1[coordinate1_player1][coordinate2_player1] == "H":
+                    if attack_table_gamep1[coordinate1_player1][coordinate2_player1] == "H":
                         clear()
                         print "That position not found..."
                         number_repeatp1 = True
+                        print("ha!_p1")
                     else:
                         table_gamep1[coordinate1_player1][coordinate2_player1] = "H"
                         board_game_player_one(table_gamep1)
                         barcosp1.append({"row":coordinate1_player1,"col":coordinate2_player1})#aboatui se aguarda las corrdenadas ingresadas por el usuario
+                        #raw_input("Press enter to continue...")  #<----
+                        clear()
                         number_repeatp1 = False
     raw_input("Press enter to continue...")
+#    clear
     return barcosp1
 
 
@@ -410,7 +385,6 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
 
         if user_v_hp1 == "vertical":
     #            for posi_p1 in range(0,2):
-                print "asdasdd"
                 p1 = coordinate1_player1 + 1
                 p2 = p1 + 1
                 p3 = p2 + 1
@@ -489,37 +463,41 @@ def position_player2():
     clear()
     barcosp2 = []
     for cordp2 in range(1,5):
-        number_repeatp2 = True
-        while number_repeatp2 == True:
-            print "PLAYER TWO"
-            print "Insert the coordinate, where  you want  to conceal your ship."
-            verific_position_p2 = True
-            while verific_position_p2 == True:
-                coordinate1_player2 = raw_input("--> Insert row: ")
-                coordinate2_player2 = raw_input("--> Insert column: ")
-                if False == coordinate1_player2.isdigit() or False == coordinate2_player2.isdigit():
-                    print "Insert numbers player TWO."
-                    verific_position_p2 = True
-                else:
-                    verific_position_p2 = False
-                    verific_position_p2 = ver_hor_p2(coordinate1_player2,coordinate2_player2)
+            number_repeatp2 = True
+            while number_repeatp2 == True:
+                print "PLAYER TWO"
+                print "Insert the coordinate, where  you want  to conceal your ship."
+                verific_position_p2 = True
+                while verific_position_p2 == True:
+                    coordinate1_player2 = raw_input("--> Insert row: ")
+                    coordinate2_player2 = raw_input("--> Insert column: ")
+                    if False == coordinate1_player2.isdigit() or False == coordinate2_player2.isdigit():
+                        print "Insert numbers player TWO."
+                        verific_position_p2 = True
+                    else:
+                        verific_position_p2 = False
+                        verific_position_p2 = ver_hor_p2(coordinate1_player2,coordinate2_player2)
                 coordinate1_player2 = int(coordinate1_player2)
                 coordinate2_player2 = int(coordinate2_player2)
                 if len (barcosp2) == 0:
-                    print "entro a len"
                     table_gamep2[coordinate1_player2][coordinate2_player2] = "B"
                     board_game_player_two(table_gamep2)
                     barcosp2.append({"row":coordinate1_player2,"col":coordinate2_player2})
+                    raw_input("Press enter to continue...")
+                    clear()
                     number_repeatp2 = False
                 else:
                     if attack_table_gamep2[coordinate1_player2][coordinate2_player2] == "B":
                         clear()
                         print "That position not found..."
                         number_repeatp2 = True
+                        print("ha!_p2")
                     else:
                         table_gamep2[coordinate1_player2][coordinate2_player2] = "B"
                         board_game_player_two(table_gamep2)
                         barcosp2.append({"row":coordinate1_player2,"col":coordinate2_player2})
+                        #raw_input("Pres enter to continue...")  # <---
+                        clear()
                         number_repeatp2 = False
     raw_input("Press enter to continue..")
     clear()
@@ -627,7 +605,6 @@ def attack_player_one(battle_1):
             a1 = answer_player1(attack1_p1,attack2_p1,battle_1)
             verific_attack_p1 = False
     return a1
-
 def answer_player1(guess_row,guess_column,battle_1):
     guess_column = int(guess_column)
     guess_row = int(guess_row)
@@ -650,6 +627,7 @@ def answer_player1(guess_row,guess_column,battle_1):
     if (guess_row < 0 or guess_row >= 10) or (guess_column < 0 or guess_column >= 10):
         clear()
         print "That is not in the ocean!!"
+        raw_input("Press enter to continue: ")
         board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
         print "You sunk ",count_ships_p1, "of ",len(battle_1)
@@ -657,6 +635,7 @@ def answer_player1(guess_row,guess_column,battle_1):
     elif table_gamep2[guess_row][guess_column] == "x":
         clear()
         print "You said that!"
+        raw_input("Press enter to continue: ")
         board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
         print "You sunk ",count_ships_p1, "of ",len(battle_1)
@@ -665,6 +644,7 @@ def answer_player1(guess_row,guess_column,battle_1):
         clear()
         print "You didn't sunk my battleship!!!. juju"
         print " "
+        raw_input("Press enter to continue: ")
         table_gamep2[guess_row][guess_column] = "x"
         attack_table_gamep2[guess_row][guess_column] = "x"
         board_game_player_one(table_gamep1)
@@ -703,10 +683,10 @@ def answer_player2(guess_rowp2,guess_columnp2,battle_2):
             board_game_player_one(attack_table_gamep1)
             print "You sunk ",count_ships_p2," of", len(battle_2)
             raw_input("Press enter to continue...")
-
             return 1
     if (guess_rowp2 < 0 or guess_rowp2 >= 10) or (guess_columnp2 < 0 or guess_columnp2 >= 10):
         print "That is not in the ocean!!"
+        raw_input("Press enter to continue: ")
 #            print " "
         board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep1)
@@ -716,6 +696,7 @@ def answer_player2(guess_rowp2,guess_columnp2,battle_2):
     elif table_gamep1[guess_rowp2][guess_columnp2] == "x":
         clear()
         print "You said that!"
+        raw_input("Press enter to continue: ")
         board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep1)
         print "You sunk ",count_ships_p2," of", len(battle_2)
@@ -724,6 +705,7 @@ def answer_player2(guess_rowp2,guess_columnp2,battle_2):
         clear()
         print "You didn't sunk my battleship!!!. juju"
         print " "
+        raw_input("Press enter to continue: ")
         table_gamep1[guess_rowp2][guess_columnp2] = "x"
         attack_table_gamep2[guess_rowp2][guess_columnp2] = "x"
         board_game_player_two(table_gamep2)
@@ -738,12 +720,12 @@ def instructions_game():
     print "                   Hi !!"
     print "          Welcome to Battleship !!"
     print "1. If you be a single player:"
-    print "     All boats are random if you're lucky,"
+    print "     All boats are random, if you're lucky,"
     print "     you can leave one position boats"
-    print "     and if you will not come much bigger boats"
+    print "     and if you will not come much bigger boats."
     print " "
     print "2. If you be someting of players:"
-    print "     you can to hide your own ships in anywhere of the ocean"
+    print "     you can to hide your own ships in anywhere of the ocean."
     print " "
     print "3. You can only insert numbers for 0 to 9."
     print " "
@@ -754,22 +736,23 @@ def instructions_game():
 
 def player_vs_bot():
     #clear_list()
-    print "Single player"
+    print "     Single Player"
+    print " "
     #posicion()
     ask_user()
 
 def print_menu():
-
 #    clear_list()
-    print ""
-    print "===================================================="
-    print "=               Welcome to Battle Ship             ="
-    print "===================================================="
+ #   print ""
+  #  print "===================================================="
+   # print "=               Welcome to Battle Ship             ="
+    #print "===================================================="
     print " "
     print "                  1.One player."
     print "                  2.Multiplayer."
     print "                  3.Instrucctions."
     print "                  4.Exit."
+    print " "
 
 
 def menu():
@@ -777,8 +760,9 @@ def menu():
     while answerusermenu == True:
         answer_usermenu = raw_input("Insert your option >>:  ")
         print " "
+        clear()
         if answer_usermenu == "1" or answer_usermenu == "One player":
-            print "ONE PLAYER..!! XD"
+            #print "ONE PLAYER..!! XD"
             player_vs_bot()
         elif answer_usermenu == "2" or answer_usermenu == "Multiplayer":
             player_Multi()
@@ -796,6 +780,10 @@ def menu():
             print_menu()
 
 def user_menu():
+    print ""
+    print "===================================================="
+    print "=               Welcome to Battle Ship             ="
+    print "===================================================="
     print_menu()
     menu()
 
