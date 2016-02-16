@@ -59,7 +59,7 @@ def play_again():
 
 
 def answer_user(guess_row,guess_column,battle):
-    """verifica si acerto o no, si no acerto se ira al if """
+    """It checks if the player I win or fail, if the player I do not gain ire to the cycle if."""
     guess_column = int(guess_column)
     guess_row = int(guess_row)
     for c in battle:
@@ -242,7 +242,7 @@ def ask_user():
 
         if False == guess_row.isdigit():
            # clear()
-            print "insert numbers"
+            print "    Insert Numbers, please."
             board_game(table_game)
             
         else:
@@ -302,18 +302,15 @@ def turns(battle_1,battle_2):
         print "Your turn is",x
         a1 = attack_player_one(battle_2)#aboatui uso los barcos como parametros para luego poder utilizarlos en la funcion de abajo.
         if a1 == None:
-            #print "derivaste todos los barcos"
             pass
         else:
             puntosp1 = puntosp1 + a1
             if puntosp1 == 2:
                 print "You derived all ships"
                 break
-
         print "Your turn is",x
         a2 = attacK_player_two(battle_1)
         if a2 == None:
-            #print "derivaste todos los barcos"
             pass
         else:
             puntosp2 = puntosp2 + a2
@@ -357,7 +354,7 @@ def position_player1():
                     #board_game_player_one(table_gamep1)
                     barcosp1.append({"row":coordinate1_player1,"col":coordinate2_player1})#aboatui se aguarda las corrdenadas ingresadas por el usuario
                     print " "
-                    raw_input("   Press enter...")
+                    raw_input("  Press Enter...")
                     clear()
                     number_repeatp1 = False
                 else:
@@ -365,7 +362,6 @@ def position_player1():
                         clear()
                         print "That position not found..."
                         number_repeatp1 = True
-                        print("ha!_p1")
                     else:
                         table_gamep1[coordinate1_player1][coordinate2_player1] = "H"
                         #board_game_player_one(table_gamep1)
@@ -395,7 +391,7 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
                 p3 = p2 + 1
                 p4 = p3 +1
                 if coordinate1_player1 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9 or coordinate2_player1 > 9:
-                    print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
+                    print "You cannot place your ship here because a part of this one out of the ocean. "
                     raw_input("Press enter to continue...")
                     clear()
                     return True
@@ -421,13 +417,13 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
                                 return True
                             else:
                                 table_gamep1[p3][coordinate2_player1] = "H"
-                                if table_gamep1[p4][coordinate2_player1] == "H":
+                                if attack_table_gamep1[p4][coordinate2_player1] == "H":
                                     print "This position already exists"
                                     raw_input("Press enter to continue...")
                                     clear()
                                     return True
                                 else:
-                                    table_gamep1[p4][coordinate2_player1] = "H"
+                                    attack_table_gamep1[p4][coordinate2_player1] = "H"
                         return False
                 #table_gamep1[p2][coordinate2_player1] = "H"
                 h_v_userp1 = False
@@ -437,13 +433,13 @@ def ver_hor_p1(coordinate1_player1,coordinate2_player1):
             p3 = p2 + 1
             p4 = p3 + 1
             if coordinate1_player1 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9 or coordinate2_player1 > 9:
-                print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
+                print "You cannot place your ship here because a part of this one out of the ocean. "
                 raw_input("Press enter to continue...")
                 clear()
                 return True
             else:
                 if table_gamep1[coordinate1_player1][p1] == "H":
-                    print "esa posicion ya existe"
+                    print "This position already exists"
                     raw_input("Press enter to continue...")
                     clear()
                     return True
@@ -520,8 +516,7 @@ def position_player2():
                         #raw_input("Pres enter to continue...")  # <---
                         clear()
                         number_repeatp2 = False
-    raw_input("Press enter to continue..")
-    #clear()
+    raw_input("Press enter to continue the battle..")
     return barcosp2
 
 
@@ -530,7 +525,6 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
     coordinate2_player2 = int(coordinate2_player2)
     h_v_userp2 = True
     while h_v_userp2 == True:
-        #clear
         print "Which direction you want to conceal your ship?"
         user_v_hp2 = raw_input("Horizontal or Vertical?: ")
         user_v_hp2 = user_v_hp2.lower()
@@ -540,7 +534,7 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
             p3 = p2 + 1
             p4 = p3 +1
             if coordinate1_player2 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9 or coordinate2_player2 > 9:
-                print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
+                print "You cannot place your ship here because a part of this one out of the ocean. "
                 raw_input("Press enter to continue...")
                 clear()
                 return True
@@ -573,9 +567,7 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
                                 return True
                             else:
                                 attack_table_gamep2[p4][coordinate2_player2] = "B"
-
                         return False
-                #table_gamep1[p2][coordinate2_player1] = "H"
                 h_v_userp2 = False
         elif user_v_hp2 == "horizontal":
             p1 = coordinate2_player2 + 1
@@ -583,27 +575,27 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
             p3 = p2 + 1
             p4 = p3 + 1
             if coordinate1_player2 > 9 or p1 > 9 or p2 > 9 or p3 > 9 or p4 > 9 or coordinate2_player2 > 9:
-                print "No puedes colocar tu barco aqui porque una parte de el esta afuera del oceano."
+                print "You cannot place your ship here because a part of this one out of the ocean. "
                 raw_input("Press enter to continue...")
                 clear()
                 return True
             else:
                 if table_gamep2[coordinate1_player2][p1] == "B":
-                    print "esa posicion ya existe"
+                    print "This position already exists"
                     raw_input("Press enter to continue...")
                     clear()
                     return True
                 else:
                     table_gamep2[coordinate1_player2][p1] = "B"
                     if table_gamep2[coordinate1_player2][p2] == "B":
-                        print "esa posicion ya existe"
+                        print "This position already exists"
                         raw_input("Press enter to continue...")
                         clear()
                         return True
                     else:
                         table_gamep2[coordinate1_player2][p2] = "B"
                         if table_gamep2[coordinate1_player2][p3] == "B":
-                            print "esa posicion ya existe"
+                            print "This position already exists"
                             raw_input("Press enter to continue...")
                             clear()
                             return True
@@ -626,7 +618,6 @@ def ver_hor_p2(coordinate1_player2,coordinate2_player2):
 
 
 def attack_player_one(battle_1):
-#    clear()
     board_game_player_one(table_gamep1)
     board_game_player_two(attack_table_gamep2)
     verific_attack_p1 = True
@@ -645,19 +636,17 @@ def answer_player1(guess_row,guess_column,battle_1):
     guess_column = int(guess_column)
     guess_row = int(guess_row)
     global count_ships_p1
-#El for verificara si acerto, si no acerto,se pasa al if.
-    for co in battle_1:#se imprime cada barco en battle_1
+    for co in battle_1:#Every ship is print in battle_1
         if guess_row == co["row"] and guess_column == co["col"]:
             clear()
             print "Great!!" + "\n" + "Congratulations! You sunk my battleship, and you sunk it hard.!"
             count_ships_p1 = count_ships_p1 + 1
             table_gamep2[guess_row][guess_column] = "*"
             attack_table_gamep2[guess_row][guess_column] = "*"
-            #board_game_player_one(table_gamep1)
             board_game_player_one(table_gamep1)
             board_game_player_two(attack_table_gamep2)
             print "You sunk ",count_ships_p1, "of ",len(battle_1)
-            raw_input("Press enter to continue...")
+            raw_input("Press enter to continue player two...")
             return 1
     if (guess_row < 0 or guess_row >= 10) or (guess_column < 0 or guess_column >= 10):
         clear()
@@ -666,7 +655,7 @@ def answer_player1(guess_row,guess_column,battle_1):
         board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
         print "You sunk ",count_ships_p1, "of ",len(battle_1)
-        raw_input("Press enter to continue...")
+        raw_input("Press enter to continue player two...")
         clear()
     elif table_gamep2[guess_row][guess_column] == "x":
         clear()
@@ -675,7 +664,7 @@ def answer_player1(guess_row,guess_column,battle_1):
         board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
         print "You sunk ",count_ships_p1, "of ",len(battle_1)
-        raw_input("Press enter to continue...")
+        raw_input("Press enter to continue player two...")
         clear()
     else:
         clear()
@@ -688,7 +677,7 @@ def answer_player1(guess_row,guess_column,battle_1):
         board_game_player_one(table_gamep1)
         board_game_player_two(attack_table_gamep2)
         print "You sunk ",count_ships_p1, "of ",len(battle_1)
-        raw_input("Press enter to continue...")
+        raw_input("Press enter to continue player two...")
 
 
 def attacK_player_two(battle_2):
@@ -721,7 +710,7 @@ def answer_player2(guess_rowp2,guess_columnp2,battle_2):
             board_game_player_two(table_gamep2)
             board_game_player_one(attack_table_gamep1)
             print "You sunk ",count_ships_p2," of", len(battle_2)
-            raw_input("Press enter to continue...")
+            raw_input("Press enter to continue player one...")
             clear()
             return 1
     if (guess_rowp2 < 0 or guess_rowp2 >= 10) or (guess_columnp2 < 0 or guess_columnp2 >= 10):
@@ -731,16 +720,16 @@ def answer_player2(guess_rowp2,guess_columnp2,battle_2):
         board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep1)
         print "You sunk ",count_ships_p2, " of",len(battle_2)
-        raw_input("Press enter to continue...")
+        raw_input("Press enter to continue player one...")
         clear()
     elif table_gamep1[guess_rowp2][guess_columnp2] == "x":
         clear()
         print "You said that!"
-        raw_input("Press enter to continue: ")
+        raw_input("Press enter to continue... ")
         board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep1)
         print "You sunk ",count_ships_p2," of", len(battle_2)
-        raw_input("Press enter to continue...")
+        raw_input("Press enter to continue player one...")
         clear()
     else:
         clear()
@@ -753,7 +742,7 @@ def answer_player2(guess_rowp2,guess_columnp2,battle_2):
         board_game_player_two(table_gamep2)
         board_game_player_one(attack_table_gamep2)
         print"You sunk ",count_ships_p2," of", len(battle_2)
-        raw_input("Press enter to continue...")
+        raw_input("Press enter to continue player one...")
 
 
 
@@ -778,18 +767,9 @@ def instructions_game():
 
 
 def player_vs_bot():
-    #clear_list()
-    #print "     Single Player"
-    #print " "
-    #posicion()
     ask_user()
 
 def print_menu():
-#    clear_list()
- #   print ""
-  #  print "===================================================="
-   # print "=               Welcome to Battle Ship             ="
-    #print "===================================================="
     print " "
     print "                  1.One player."
     print "                  2.Multiplayer."
@@ -805,7 +785,6 @@ def menu():
         print " "
         clear()
         if answer_usermenu == "1" or answer_usermenu == "One player":
-            #print "ONE PLAYER..!! XD"
             player_vs_bot()
         elif answer_usermenu == "2" or answer_usermenu == "Multiplayer":
             player_Multi()
@@ -814,7 +793,7 @@ def menu():
         elif answer_usermenu == "3" or answer_usermenu == "Instructions":
             instructions_game()
         elif answer_usermenu == "4" or answer_usermenu == "Exit":
-            print "See you later, bye bye!!"
+            print "See you soon, bye bye.!!"
             sys.exit()
         else:
             clear()
